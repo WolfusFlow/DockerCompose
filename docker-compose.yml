@@ -1,0 +1,102 @@
+version: '3'
+services:
+  web:
+    build: ./djangoproject
+    # expose:
+      # - "8000"
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/djangoproject
+      # - WEBdata:/var/lib/djangoproject/data
+    ports:
+      - "8000:8000"
+    links:
+      - postgres
+    depends_on:
+      - postgres       
+    environment:
+      PGHOST: "postgres"
+      PGDATABASE: "postgres"
+      PGUSER: "postgres"
+      PGPASSWORD: "password"
+      # default PGPORT=5432 will work fine    
+
+  sender0:
+    build: ./PythonSender 
+    links:
+      - postgres 
+      - rabbit          
+    depends_on:
+      - postgres
+      - rabbit
+    environment:
+      SERVERNAME: "1" #'firstserver' #command: -inMemory  #To send current server id as command to arguments and use in programm
+  sender1:
+    build: ./PythonSender
+    links:
+      - postgres 
+      - rabbit            
+    depends_on:
+      - postgres
+      - rabbit
+    environment:
+      SERVERNAME: "2" #'secondserver'  
+  sender2:
+    build: ./PythonSender
+    links:
+      - postgres 
+      - rabbit         
+    depends_on:
+      - postgres
+      - rabbit
+    environment:
+      SERVERNAME: "3" #'thirdserver'    
+  sender3:
+    build: ./PythonSender  
+    links:
+      - postgres 
+      - rabbit      
+    depends_on:
+      - postgres
+      - rabbit  
+    environment:
+      SERVERNAME: "4" #'fourthserver'    
+  sender4:
+    build: ./PythonSender
+    links:
+      - postgres 
+      - rabbit           
+    depends_on:
+      - postgres
+      - rabbit     
+    environment:
+      SERVERNAME: "5" #'fifthserver'              
+  
+  agregator:
+    build: ./DockerAgregator            
+    depends_on:
+      - postgres
+      - rabbit  
+    environment:
+      PGHOST: postgres
+      # default PGPORT=5432 will work fine  
+        
+  rabbit:
+    image: rabbitmq:latest
+    # ports:
+      # - "5672:5672" 
+
+  postgres:
+    # build: ./database/
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    volumes:
+      - PGdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: password
+
+volumes:
+    PGdata: {}
+    #WEBdata: {}
