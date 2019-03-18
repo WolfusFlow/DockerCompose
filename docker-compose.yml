@@ -1,19 +1,23 @@
 version: '3'
 services:
   web:
-    build: ./djangoproject
-    # expose:
-      # - "8000"
-    command: python manage.py runserver 0.0.0.0:8000
+    # restart: always
+    build: .
+    expose:
+      - "8000"
+    command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    #command: /usr/local/bin/gunicorn docker_django.wsgi:application -w 2 -b :8000
     volumes:
-      - .:/djangoproject
+      - .:/composeexample
       # - WEBdata:/var/lib/djangoproject/data
+      # - /usr/src/app
+      # - /usr/src/app/static    
     ports:
       - "8000:8000"
     links:
       - postgres
     depends_on:
-      - postgres       
+      - postgres 
     environment:
       PGHOST: "postgres"
       PGDATABASE: "postgres"
@@ -87,6 +91,7 @@ services:
       # - "5672:5672" 
 
   postgres:
+    # restart: always
     # build: ./database/
     image: postgres:latest
     ports:
