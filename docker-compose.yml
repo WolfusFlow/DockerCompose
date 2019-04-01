@@ -2,13 +2,13 @@ version: '3'
 services:
   web:
     # restart: always
-    build: .
+    build: ./djangoproject
     expose:
       - "8000"
-    command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    command: bash -c "python ./djangoproject/manage.py makemigrations table && python ./djangoproject/manage.py migrate && python ./djangoproject/manage.py runserver 0.0.0.0:8000 && npm run dev"
     #command: /usr/local/bin/gunicorn docker_django.wsgi:application -w 2 -b :8000
     volumes:
-      - .:/composeexample
+      - .:/djangoproject
       # - WEBdata:/var/lib/djangoproject/data
       # - /usr/src/app
       # - /usr/src/app/static    

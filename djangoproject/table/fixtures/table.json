@@ -1,0 +1,18 @@
+[
+    {
+        "model": "table.valueTable",
+        "pk": 1,
+        "fields": {
+            "value":"5432",
+            "created_at": "2018-02-14 00:00:00"
+        }
+    },
+    {
+        "model": "table.valueTable",
+        "pk": 2,
+        "fields": {
+            "value":"6879", 
+            "created_at": "2018-01-14 00:00:00"
+        }
+    }
+]
