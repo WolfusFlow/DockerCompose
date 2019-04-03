@@ -6,6 +6,7 @@ RUN  pip install --no-cache-dir pika
 # RUN  pip install --no-cache-dir puka
 
 COPY . .  
+# COPY . /PythonSender/
 #copy all files for fast docker up
 
 #"./pythonSendPika.py   queueRabbit.py"

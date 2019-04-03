@@ -6,6 +6,10 @@ import time
 import json
 import sys
 import datetime
+# from . import SetupDjangoORM
+# from django.conf import settings
+# import django
+# from django.conf import settings
 #from djangoproject.models import *
 #from django.conf import settings
 
@@ -30,6 +34,13 @@ arr = numpy.array([])
 t_end = time.time() + 60
 
 
+connection = pika.BlockingConnection(
+    pika.ConnectionParameters(host='rabbit'))
+channel = connection.channel()
+
+channel.queue_declare(queue='samplequeue')
+
+
 def percentil(value):
    numpy.append(arr, value)
    if(time.time() ==t_end):       
@@ -39,7 +50,7 @@ def percentil(value):
         
 
 def insert_value(record):
-    sql = """INSERT INTO messageValues(_) VALUES(%s)""" #messageValues
+    sql = """INSERT INTO valueTable(_) VALUES(%s)""" #messageValues
     conn = None
     record_id=None
     try:
@@ -72,16 +83,17 @@ def on_message(channel, method_frame, header_frame, body):
     #percentil(message['value'])
     #insert_value(body)
     print()
-    channel.basic_ack(delivery_tag=method_frame.delivery_tag)
+    # channel.basic_ack(delivery_tag=method_frame.delivery_tag)
     #Connect to database and add value to it
     sys.stdout.flush()
 
 
-connection = pika.BlockingConnection()
-channel = connection.channel()
-channel.basic_consume(on_message, 'samplequeue')
-try:
-    channel.start_consuming()
-except KeyboardInterrupt:
-    channel.stop_consuming()
-connection.close()
+channel.basic_consume(
+    queue='samplequeue', on_message_callback=on_message, auto_ack=True)
+
+channel.start_consuming()
+
+# try:
+# except KeyboardInterrupt:
+    # channel.stop_consuming()
+# connection.close()

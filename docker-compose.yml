@@ -15,9 +15,11 @@ services:
     ports:
       - "8000:8000"
     links:
+      - rabbit
       - postgres
     depends_on:
-      - postgres 
+      - postgres
+      - rabbit 
     environment:
       PGHOST: "postgres"
       PGDATABASE: "postgres"
@@ -35,6 +37,7 @@ services:
       - rabbit
     environment:
       SERVERNAME: "1" #'firstserver' #command: -inMemory  #To send current server id as command to arguments and use in programm
+      
   sender1:
     build: ./PythonSender
     links:
@@ -45,6 +48,7 @@ services:
       - rabbit
     environment:
       SERVERNAME: "2" #'secondserver'  
+     
   sender2:
     build: ./PythonSender
     links:
@@ -55,6 +59,7 @@ services:
       - rabbit
     environment:
       SERVERNAME: "3" #'thirdserver'    
+     
   sender3:
     build: ./PythonSender  
     links:
@@ -65,6 +70,7 @@ services:
       - rabbit  
     environment:
       SERVERNAME: "4" #'fourthserver'    
+     
   sender4:
     build: ./PythonSender
     links:
@@ -75,18 +81,26 @@ services:
       - rabbit     
     environment:
       SERVERNAME: "5" #'fifthserver'              
+     
   
   agregator:
     build: ./DockerAgregator            
     depends_on:
       - postgres
-      - rabbit  
+      - rabbit
+    links:
+      - postgres 
+      - rabbit     
     environment:
-      PGHOST: postgres
+      PGHOST: "postgres"
+      PGDATABASE: "postgres"
+      PGUSER: "postgres"
+      PGPASSWORD: "password"
       # default PGPORT=5432 will work fine  
         
   rabbit:
     image: rabbitmq:latest
+    hostname: rabbit
     # ports:
       # - "5672:5672" 
 
