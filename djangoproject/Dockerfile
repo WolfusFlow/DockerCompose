@@ -6,3 +6,4 @@ WORKDIR /djangoproject
 COPY requirements.txt /djangoproject/
 RUN pip install -r requirements.txt
 COPY . /djangoproject/
+COPY . .

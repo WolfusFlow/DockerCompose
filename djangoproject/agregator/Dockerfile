@@ -9,12 +9,8 @@ RUN  pip install --no-cache-dir numpy
 RUN  pip install --no-cache-dir django
 # RUN  pip install --no-cache-dir puka
 
-# COPY /djangoproject/ .
-# COPY ~/djangoproject/table/models.py ./ormDb
-WORKDIR /DockerAgregator
-COPY ./ ./
+COPY djangoproject/table/models.py .
 COPY . .
-
 # COPY . /DockerAgregator/
 
 #"./pythonSendPika.py   pythonAgregator.py"

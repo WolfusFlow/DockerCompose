@@ -1,11 +1,13 @@
 version: '3'
+#docker system prune --all
 services:
   web:
     # restart: always
+    # && python ./djangoproject/manage.py dumpdata table
     build: ./djangoproject
     expose:
       - "8000"
-    command: bash -c "python ./djangoproject/manage.py makemigrations table && python ./djangoproject/manage.py migrate && python ./djangoproject/manage.py runserver 0.0.0.0:8000 && npm run dev"
+    command: bash -c "python ./djangoproject/manage.py makemigrations table && python ./djangoproject/manage.py migrate  && python ./djangoproject/manage.py runserver 0.0.0.0:8000 && npm run dev && python pythonAgregator.py"
     #command: /usr/local/bin/gunicorn docker_django.wsgi:application -w 2 -b :8000
     volumes:
       - .:/djangoproject
@@ -84,7 +86,9 @@ services:
      
   
   agregator:
-    build: ./DockerAgregator            
+    build: ./DockerAgregator
+    # command: bash -c "python ./manage.py sql ormDb"  
+    # command: bash -c "python manage.py makemigrations ormDb && python manage.py migrate "
     depends_on:
       - postgres
       - rabbit
@@ -103,6 +107,10 @@ services:
     hostname: rabbit
     # ports:
       # - "5672:5672" 
+      # - "4369:4369" 
+      # - "35197:35197" 
+      # - "15672:15672" 
+
 
   postgres:
     # restart: always

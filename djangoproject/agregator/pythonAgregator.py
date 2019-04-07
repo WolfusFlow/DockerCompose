@@ -8,55 +8,17 @@ import os
 import sys
 import datetime
 import django
-time.sleep(10)
-# from djangoproject.djangoproject import settings
-from django.conf import settings
 from django.db import models
+# from djangoproject import settings
+from django.conf import settings
+# from django.core.management import setup_environ
 
 
-# from django.apps import apps
-# from django.db import models
+# os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings")
+# from django.conf import settings
+# django.setup()
 
 
-settings.configure(
-    DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'HOST': 'postgres',
-        'PGUSER':'postgres',
-        'PGPASSWORD':'password',
-        'PORT': 5432,
-        }
-    },
-    INSTALLED_APPS = [
-        # 'django.contrib.admin',
-        'django.contrib.auth',
-        'django.contrib.contenttypes',
-        'django.contrib.messages',
-        'django.contrib.sessions',
-        'django.contrib.sitemaps',
-        'django.contrib.sites',
-        'django.contrib.staticfiles',
-        'ormDb',        
-    ]
-)
-django.setup()
-
-if __name__ == '__main__':
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings')
-    try:
-        from django.core.management import execute_from_command_line
-    except ImportError as exc:
-        raise ImportError(
-            "Couldn't import Django. Are you sure it's installed and "
-            "available on your PYTHONPATH environment variable? Did you "
-            "forget to activate a virtual environment?"
-        ) from exc
-    execute_from_command_line(sys.argv)
-
-from djangoproject.table import valueTable
 
 connection = pika.BlockingConnection(
     pika.ConnectionParameters(host='rabbit'))
@@ -64,21 +26,6 @@ channel = connection.channel()
 
 channel.queue_declare(queue='samplequeue')
 print('Connection')
-
-
-# project_path = "./DockerCompose/djangoproject/"
-
-# sys.path.insert(0, './DockerCompose/djangoproject/')
-
-# from djangoproject.table.models import *
-
-
-# sys.path.append(project_path)
-
-
-# from django.core.wsgi import get_wsgi_application
-# application = get_wsgi_application()
-
 
 
 print('WEll')
