@@ -31,62 +31,84 @@ services:
 
   sender0:
     build: ./PythonSender 
+     # context: ./PythonSender
+      # dockerfile: ./PythonSender/Dockerfile
+    # args: 
+      # serverName: "1"
     links:
       - postgres 
       - rabbit          
     depends_on:
       - postgres
-      - rabbit
-    environment:
+      - rabbit    
+    environment:           
       SERVERNAME: "1" #'firstserver' #command: -inMemory  #To send current server id as command to arguments and use in programm
       
   sender1:
     build: ./PythonSender
+     # context: ./PythonSender
+      # dockerfile: ./PythonSender/Dockerfile
+    # args: 
+      # serverName: "2"
     links:
       - postgres 
       - rabbit            
     depends_on:
       - postgres
-      - rabbit
+      - rabbit     
     environment:
       SERVERNAME: "2" #'secondserver'  
      
   sender2:
     build: ./PythonSender
+    # context: ./PythonSender
+      # dockerfile: ./PythonSender/Dockerfile
+    # args: 
+      # serverName: "3"  
     links:
       - postgres 
       - rabbit         
     depends_on:
       - postgres
-      - rabbit
+      - rabbit    
     environment:
       SERVERNAME: "3" #'thirdserver'    
      
   sender3:
     build: ./PythonSender  
+    # context: ./PythonSender
+      # dockerfile: ./PythonSender/Dockerfile
+      # args: 
+      # serverName: "4"  
     links:
       - postgres 
       - rabbit      
     depends_on:
       - postgres
-      - rabbit  
+      - rabbit       
     environment:
       SERVERNAME: "4" #'fourthserver'    
      
   sender4:
     build: ./PythonSender
+      # context: ./PythonSender
+      # dockerfile: ./PythonSender/Dockerfile
+      # args: 
+        # serverName: "5" 
     links:
       - postgres 
       - rabbit           
     depends_on:
       - postgres
-      - rabbit     
+      - rabbit           
     environment:
       SERVERNAME: "5" #'fifthserver'              
      
   
   agregator:
-    build: ./DockerAgregator
+    build:  
+      context: ./
+      dockerfile: ./DockerAgregator/Dockerfile
     # command: bash -c "python ./manage.py sql ormDb"  
     # command: bash -c "python manage.py makemigrations ormDb && python manage.py migrate "
     depends_on:

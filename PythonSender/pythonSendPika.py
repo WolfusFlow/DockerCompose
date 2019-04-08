@@ -6,7 +6,7 @@ import json
 import os
 import datetime
 
-time.sleep(10)
+time.sleep(13)
 
 connection = pika.BlockingConnection(pika.ConnectionParameters(host='rabbit')) #write as 127 and port?  https://127.0.0.1 
 channel = connection.channel()

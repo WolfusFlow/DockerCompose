@@ -11,12 +11,14 @@ RUN  pip install --no-cache-dir django
 
 # COPY /djangoproject/ .
 # COPY ~/djangoproject/table/models.py ./ormDb
-WORKDIR /DockerAgregator
-COPY ./ ./
+# WORKDIR /DockerAgregator
+
+# COPY . DockerAgregator
 COPY . .
 
 # COPY . /DockerAgregator/
 
 #"./pythonSendPika.py   pythonAgregator.py"
-CMD [ "python", "./pythonAgregator.py" ] 
+
+CMD [ "python", "./DockerAgregator/pythonAgregator.py" ] 
 # CMD [ "python", "./manage.py", "sql", "ormDb" ]

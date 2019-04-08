@@ -8,7 +8,7 @@ import os
 import sys
 import datetime
 import django
-time.sleep(10)
+time.sleep(13)
 # from djangoproject.djangoproject import settings
 from django.conf import settings
 from django.db import models
@@ -39,7 +39,7 @@ settings.configure(
         'django.contrib.sitemaps',
         'django.contrib.sites',
         'django.contrib.staticfiles',
-        'ormDb',        
+        'ormDb',                
     ]
 )
 django.setup()
@@ -56,7 +56,9 @@ if __name__ == '__main__':
         ) from exc
     execute_from_command_line(sys.argv)
 
-from djangoproject.table import valueTable
+# from djangoproject.table.models import valueTable
+
+
 
 connection = pika.BlockingConnection(
     pika.ConnectionParameters(host='rabbit'))
@@ -65,6 +67,19 @@ channel = connection.channel()
 channel.queue_declare(queue='samplequeue')
 print('Connection')
 
+# sys.path.insert(0, '/djangoproject/table/') #regular expresion for better access
+# sys.path.append('./djangoproject/')
+# sys.path.append("../djangoproject/table/")
+# sys.path.append("./djangoproject/table/")
+# sys.path.append("../djangoproject/")
+# sys.path.append("./djangoproject/")
+sys.path.append("./")
+
+import djangoproject.table.models
+# import djangoproject.settings
+# import table.models.valueTable
+# import models.valueTable
+# from models import valueTable
 
 # project_path = "./DockerCompose/djangoproject/"
 
@@ -116,7 +131,7 @@ print('WEll')
 
 def put_in(val):
     print('value: '+str(val))
-    new_value = valueTable(value=str(val), created_time = models.DateTimeField(auto_now_add=True))
+    new_value = models.valueTable(value=str(val), created_time = models.DateTimeField(auto_now_add=True))
     new_value.save()
     print('SENT')
     
